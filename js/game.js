@@ -78,8 +78,7 @@ function create() {
     gameCover = this.add.image(180, 320, 'cover');
     gameCover.setDepth(5);
     
-    gameBg = this.add.image(180, 330, 'gameBg');
-//    gameBg.setScale(0.4);
+    gameBg = this.add.image(180, 320, 'gameBg');
     gameBg.setVisible(false);
     
      //---star---

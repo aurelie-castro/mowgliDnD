@@ -11,7 +11,7 @@ let config = {
         create: create,
         update: update
     },
-    backgroundColor: '#9fe79f',
+    backgroundColor: '#88e288',
     audio: {
         disableWebAudio: true
     },
@@ -36,12 +36,17 @@ var starScale;
 
 var gameBg;
 
+var gameCover;
+var startClicked;
+
 //
 function init() {
 }
 
 function preload() {
     this.load.image('background', './assets/mowgli-01.png');
+    
+    this.load.image('cover', './assets/mowgliCOVER-01.png');
     
     this.load.image('head', './assets/mowgliHead-01.png');
     this.load.image('body', './assets/mowgliBody-01.png');
@@ -69,6 +74,9 @@ function preload() {
 }
 
 function create() { 
+    
+    gameCover = this.add.image(180, 320, 'cover');
+    gameCover.setDepth(5);
     
     gameBg = this.add.image(180, 330, 'gameBg');
     gameBg.setScale(0.4);
@@ -137,11 +145,11 @@ function create() {
     
     //-----les drop zones----
     //  A drop zone
-    var zone = this.add.zone(220, 125, 115, 120).setRectangleDropZone(115, 120);
+    var zone = this.add.zone(218, 123, 115, 120).setRectangleDropZone(115, 120);
     zone.setName('head');
     
     //  A drop zone
-    var zone2 = this.add.zone(232, 268, 90, 137).setRectangleDropZone(90, 137);
+    var zone2 = this.add.zone(232, 266, 90, 137).setRectangleDropZone(90, 137);
     zone2.setName('body');
     
     //  A drop zone
@@ -176,8 +184,10 @@ function create() {
  
     this.input.on('dragstart', function (pointer, gameObject) {
 
+ if (startClicked === true){
         this.children.bringToTop(gameObject);
-        holdSound.play();
+              holdSound.play();
+         }
 
     }, this);
 
@@ -237,9 +247,16 @@ else{
     }    
         
         nextArrow.on('pointerdown', onClick);
-
+        
     });
     
+this.input.on('pointerdown', function(pointer){
+        if(pointer.x >= 53 && pointer.x <= 154  && pointer.y >= 376 && pointer.y <=480){
+//            console.log("cliqué sur start");
+            startClicked = true;
+//            sessionStorage.setItem("start clicked", "yes");
+            gameCover.setVisible(false);
+}});
 
 }
 

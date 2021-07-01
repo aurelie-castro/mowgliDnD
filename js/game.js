@@ -23,13 +23,11 @@ let game = new Phaser.Game(config);
 var nextArrow;
 let successfulDropoff;
 
+var startSound;
 var holdSound;
 var wrongSound;
 var correctSound;
 var finishSound;
-
-var soundButton;
-var hasBeenClicked;
 
 var star;
 var starScale;
@@ -55,14 +53,12 @@ function preload() {
     this.load.image('legR', './assets/mowgliLegR-01.png');
     
     this.load.image('nextArrow', './assets/green-arrow (1).png');
-    
+ 
+    this.load.audio('start', './assets/start1.wav');
     this.load.audio('hold', './assets/hold.wav');
     this.load.audio('wrong', './assets/wrong.wav');
     this.load.audio('correct', './assets/correct.wav');
     this.load.audio('finish', './assets/finish.wav');
-    
-    //---sound button----
-    this.load.image('soundBtn', './assets/volume-up (2).png');
     
     //---star at the end---
     this.load.image('star', './assets/green-star.png');
@@ -73,6 +69,7 @@ function preload() {
 }
 
 function create() { 
+    startClicked = false;
     
     gameCover = this.add.image(180, 320, 'cover');
     gameCover.setDepth(5);
@@ -90,18 +87,12 @@ function create() {
     
     var image = this.add.image(200, 250, 'background');
     image.alpha = 0.3;
-    
+  
+    startSound = this.sound.add('start');
     holdSound = this.sound.add('hold');
     wrongSound = this.sound.add('wrong');
     correctSound = this.sound.add('correct');
     finishSound = this.sound.add('finish');
-    
-    //----audio  btn----
-    soundButton = this.add.image(50,50, 'soundBtn');
-    soundButton.setScale(0.1);
-    soundButton.setInteractive();
-    soundButton.alpha = 0.5;
-    soundButton.on('pointerdown', enableMusic);
     
     //----les membres-----
     var head = this.add.image(82, 530, 'head', Phaser.Math.RND.pick(frames)).setInteractive();
@@ -220,8 +211,11 @@ else{
     
 this.input.on('pointerdown', function(pointer){
         if(pointer.x >= 53 && pointer.x <= 154  && pointer.y >= 376 && pointer.y <=480){
-            startClicked = true;
-            gameCover.setVisible(false);
+             startSound.play();
+            setTimeout(function(){ 
+                startClicked = true; 
+                gameCover.setVisible(false);
+            }, 500);
 }});
 
 }
@@ -234,15 +228,8 @@ function update() {
         if (starScale > 0.2){
             starScale = 0.2;
         } }
-    
-       if (hasBeenClicked === true){
-        soundButton.alpha = 1;
-        }
 }
 function onClick(){
     window.location.replace("https://games.caramel.be/kaa/index.html");
 
-}
-function enableMusic(){
-    hasBeenClicked = true;
 }
